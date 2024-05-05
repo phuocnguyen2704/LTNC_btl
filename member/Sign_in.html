@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset = "UTF-8">
+        <meta http-equiv="X-UA_Compatible" content="IE=edge">
+        <title>Firebase v10 Crud</title>
+        <style>
+            label{
+                display: inline-block;
+                font-size: 16px;
+                font-family: Arial, Helvetica, sans-serif;
+                width:110px;
+            }
+
+            input,select{
+                width: 180px;
+                height: 30px;
+                font-size: 16px;
+                font-family: Arial, Helvetica, sans-serif;
+
+            }
+
+            button{
+                height: 30px;
+                width: 70px;
+            }
+        </style>
+        <body>
+                <label>Tên đăng nhập </label><input id = "id_input" type="number"><br><br>
+                <label >Mật khẩu </label><input type="text" id="pass_input"><br><br>
+                <label >Bạn là </label>
+                <select  id="Department_input">
+                    <option value="lựa chọn">Lựa chọn </option>
+                    <option value="Student">Sinh viên</option>
+                    <option value="Teacher">Giáo viên</option>
+                    <option value="management">Quản lí</option>
+                </select><br><br>
+                <button id="Sign_input">Sign_in</button>
+        
+        <!-- ----------------------------------------------------------------------------------------------------------------- -->
+                <script type="module">
+                    // Import the functions you need from the SDKs you need
+                    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.11.1/firebase-app.js";
+                    // TODO: Add SDKs for Firebase products that you want to use
+                    // https://firebase.google.com/docs/web/setup#available-libraries
+                  
+                    // Your web app's Firebase configuration
+                    const firebaseConfig = {
+                      apiKey: "AIzaSyAsy1OUdfQY8p9_GQXv8x9f-8tb5R6YKrg",
+                      authDomain: "btl-firebase-7f1fd.firebaseapp.com",
+                      databaseURL: "https://btl-firebase-7f1fd-default-rtdb.firebaseio.com",
+                      projectId: "btl-firebase-7f1fd",
+                      storageBucket: "btl-firebase-7f1fd.appspot.com",
+                      messagingSenderId: "775778249826",
+                      appId: "1:775778249826:web:e329c73c29902a6875753b"
+                    };
+                    // Initialize Firebase
+                    const app = initializeApp(firebaseConfig);
+                    import{ getDatabase , ref , set , child , get , update, remove} from "https://www.gstatic.com/firebasejs/10.11.1/firebase-database.js";
+                    const db=getDatabase();
+
+                    let id_input_db=document.getElementById('id_input');
+                    let pass_input_db=document.getElementById('pass_input');
+                    let Department_input_db=document.getElementById('Department_input');
+                    
+                    let Sign_input_db=document.getElementById('Sign_input');
+
+                    function Sign_in_function(){ 
+                        const dbref=ref(db);
+                        if (Department_input_db.value==="Student"){
+                            
+                            get(child(dbref, 'Student/' +  id_input_db.value)).then((snapshot) => {
+                                if(snapshot.exists()){
+                                    if(pass_input_db.value===snapshot.val().pass){
+                                        
+                                        alert("  Sinh viên đăng nhập thành công ");
+                                    }
+                                    else {
+                                        alert(" Sai mật khẩu, yêu cầu sinh viên đăng nhập lại ");                                        
+                                    }
+                                }else{
+                                    alert("Tài khoản sinh viên không tồn tại");
+                                }
+                            }).catch((err) => {
+                                alert("error");
+                                console.log(error);
+                            });
+                        } else if (Department_input_db.value==="teacher"){
+                            get(child(dbref, 'Teacher/' + id_input_db.value)).then((snapshot) => {
+                                if(snapshot.exists()){
+                                    if(pass_input_db===snapshot.val().pass){
+                                        alert("Giảng viên đăng nhập thành công");
+                                    }
+                                    else {
+                                        alert("Sai mật khẩu, vui lòng đăng nhập lại ");
+                                    }
+                                }else {
+                                    alert("Tài khoản không tồn tại");
+                                }
+                            }).catch((err) =>{
+                                alert("error");
+                                console.log(error);
+                            })
+                        }else if (Department_input_db.value==="management"){
+                            get(child(dbref, 'Manage/' + id_input_db.value)).then((snapshot) => {
+                                if(snapshot.exists()){
+                                    if(pass_input_db===snapshot.val().pass){
+                                        alert("Quản lí đăng nhập thành công");
+                                    }
+                                    else {
+                                        alert("Sai mật khẩu, vui lòng đăng nhập lại ");
+                                    }
+                                }else {
+                                    alert("Tài khoản không tồn tại");
+                                }
+                            }).catch((err) =>{
+                                alert("error");
+                                console.log(error);
+                            }) 
+                        }else {
+                            alert("vui long chon ban_la")
+                        }
+                    }
+
+                    Sign_input_db.addEventListener('click',Sign_in_function);
+
+
+
+                  </script>
+        
+        </body>
+
+
+
+        
+    </head>
+</html>

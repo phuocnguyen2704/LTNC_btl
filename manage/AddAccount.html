@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset = "UTF-8">
+        <meta http-equiv="X-UA_Compatible" content="IE=edge">
+        <title>Firebase v10 Crud</title>
+        <style>
+            label{
+                display: inline-block;
+                font-size: 16px;
+                font-family: Arial, Helvetica, sans-serif;
+                width:110px;
+            }
+
+            input,select{
+                width: 180px;
+                height: 30px;
+                font-size: 16px;
+                font-family: Arial, Helvetica, sans-serif;
+
+            }
+
+            button{
+                height: 30px;
+                width: 70px;
+            }
+        </style>
+    </head>
+    <body>
+
+        <label>Họ và tên</label> <input id="Name_input" type="text"><br><br>
+        <label>Id</label> <input id="ID_input" type="number"><br><br>
+        <label>Email</label> <input id="Email_input" type="text"><br><br>
+        <label>Mật khẩu</label> <input id="Password_input" type="text"><br><br>
+        <label>Số điện thoại</label> <input id="phone_input" type="number"><br><br>
+        <label>Khoa</label>
+        <select  id="faculy_input">
+            <option value="faculy_choices">Lựa chọn</option>
+            <option value="Khoa_May_Tinh">Máy tính</option>
+            <option value="Khoa_Dien">Điện - Điện tử</option>
+            <option value="Khoa_Co_khi">Cơ khí</option>
+        </select>
+        <br><br>
+        <label>Loại tài khoản</label>
+        <select  id="Department_input">
+            <option value="dep_choices">Lựa chọn</option>
+            <option value="Student">Student</option>
+            <option value="Teacher">Teacher</option>
+        </select>
+        <br><br>
+        <button id="Sign_in_input" >Thêm</button> 
+    
+            <!-- ----------------------------------------------------------------------------------------------------------------- -->
+            <script type="module">
+                // Import the functions you need from the SDKs you need
+                import { initializeApp } from "https://www.gstatic.com/firebasejs/10.11.1/firebase-app.js";
+                // TODO: Add SDKs for Firebase products that you want to use
+                // https://firebase.google.com/docs/web/setup#available-libraries
+              
+                // Your web app's Firebase configuration
+                const firebaseConfig = {
+                  apiKey: "AIzaSyAsy1OUdfQY8p9_GQXv8x9f-8tb5R6YKrg",
+                  authDomain: "btl-firebase-7f1fd.firebaseapp.com",
+                  databaseURL: "https://btl-firebase-7f1fd-default-rtdb.firebaseio.com",
+                  projectId: "btl-firebase-7f1fd",
+                  storageBucket: "btl-firebase-7f1fd.appspot.com",
+                  messagingSenderId: "775778249826",
+                  appId: "1:775778249826:web:e329c73c29902a6875753b"
+                };
+              
+                // Initialize Firebase
+                const app = initializeApp(firebaseConfig);
+                import{ getDatabase , ref , set , child , get , update, remove} from "https://www.gstatic.com/firebasejs/10.11.1/firebase-database.js";
+                const db=getDatabase();
+                
+
+
+                // add_in_bt_db.addEventListener('click',AddAccount);
+            let Name_input_db=document.getElementById('Name_input');
+            
+            let ID_input_db=document.getElementById('ID_input');
+            let Email_input_db=document.getElementById('Email_input');
+            let Password_db= document.getElementById('Password_input');
+            let Department_db=document.getElementById('Department_input');
+            let faculy_input_db=document.getElementById('faculy_input');
+            let phone_input_db=document.getElementById('phone_input');
+            let Sign_in_db = document.getElementById('Sign_in_input');
+
+
+            function Addaccount(){
+                if(Department_db.value==="Teacher"){
+                    set(ref(db,'Teacher/' + ID_input_db.value),{
+                        name:Name_input_db.value,
+                        email:Email_input_db.value,
+                        pass:Password_db.value,
+                        phone_number: phone_input_db.value,
+                        faculy: faculy_input_db.value
+                    })
+                    .then(()=>{
+                        alert("Thêm tài khoản giáo viên thành công");
+                    })
+                    .catch((error)=>{
+                        alert("Thêm tài khoản giáo viên không thành công");
+                        console.log.error();
+                    })
+                }
+                else {
+                    set(ref(db,'Student/' + ID_input_db.value),{
+                        name:Name_input_db.value,
+                        email:Email_input_db.value,
+                        pass:Password_db.value,
+                        phone_number: phone_input_db.value,
+                        faculy: faculy_input_db.value
+                    })
+                    .then(()=>{
+                        alert("Thêm tài khoản sinh viên thành công");
+                    })
+                    .catch((error)=>{
+                        alert("Thêm tài khoản sinh viên không thành công");
+                        console.log.error();
+                    })
+                }
+            }
+          
+            Sign_in_db.addEventListener('click',Addaccount);
+
+
+
+            </script>
+
+    
+    
+    </body>
+
+
+
+
+</html>
