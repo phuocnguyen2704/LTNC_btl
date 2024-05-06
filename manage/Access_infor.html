@@ -22,12 +22,12 @@
 
             button{
                 height: 30px;
-                width: 70px;
+                width: 200px;
             }
         </style>
         <body>
                 <label>Tên đăng nhập </label><input id = "id_input" type="number"><br><br>
-                <label >Mật khẩu </label><input type="text" id="pass_input"><br><br>
+                <label > Email </label><input type="text" id="email_input"><br><br>
                 <label >Bạn là </label>
                 <select  id="Department_input">
                     <option value="lựa chọn">Lựa chọn </option>
@@ -35,7 +35,7 @@
                     <option value="Teacher">Giáo viên</option>
                     <option value="management">Quản lí</option>
                 </select><br><br>
-                <button id="Sign_input">Sign_in</button>
+                <button id="Sign_input">Lấy lại mật khẩu</button>
         
         <!-- ----------------------------------------------------------------------------------------------------------------- -->
                 <script type="module">
@@ -60,23 +60,23 @@
                     const db=getDatabase();
 
                     let id_input_db=document.getElementById('id_input');
-                    let pass_input_db=document.getElementById('pass_input');
+                    let email_input_db=document.getElementById('email_input');
                     let Department_input_db=document.getElementById('Department_input');
                     
                     let Sign_input_db=document.getElementById('Sign_input');
 
-                    function Sign_in_function(){ 
+                    function get_pass(){ 
                         const dbref=ref(db);
                         if (Department_input_db.value==="Student"){
                             
                             get(child(dbref, 'Student/' +  id_input_db.value)).then((snapshot) => {
                                 if(snapshot.exists()){
-                                    if(pass_input_db.value===snapshot.val().pass){
+                                    if( email_input_db.value===snapshot.val().email ){
                                         
-                                        alert("  Sinh viên đăng nhập thành công ");
+                                        alert("  Sinh viên lấy lại mật khẩu thành công, vui lòng check email ");
                                     }
                                     else {
-                                        alert(" Sai mật khẩu, yêu cầu sinh viên đăng nhập lại ");                                        
+                                        alert(" Sai email hoặc số điện thoại , yêu cầu sinh viên  nhập lại thông tin ");                                        
                                     }
                                 }else{
                                     alert("Tài khoản sinh viên không tồn tại");
@@ -88,41 +88,26 @@
                         } else if (Department_input_db.value==="teacher"){
                             get(child(dbref, 'Teacher/' + id_input_db.value)).then((snapshot) => {
                                 if(snapshot.exists()){
-                                    if(pass_input_db.value===snapshot.val().pass){
-                                        alert("Giảng viên đăng nhập thành công");
+                                    if( email_input_db.value===snapshot.val().pass ){
+                                        
+                                        alert("  Giáo viên lấy lại mật khẩu thành công, vui lòng check email ");
                                     }
                                     else {
-                                        alert("Sai mật khẩu, vui lòng đăng nhập lại ");
+                                        alert(" Sai email hoặc số điện thoại , yêu cầu giáo viên  nhập lại thông tin ");                                        
                                     }
-                                }else {
-                                    alert("Tài khoản không tồn tại");
+                                }else{
+                                    alert("Tài khoản sinh viên không tồn tại");
                                 }
                             }).catch((err) =>{
                                 alert("error");
                                 console.log(error);
                             })
-                        }else if (Department_input_db.value==="management"){
-                            get(child(dbref, 'Manage/' + id_input_db.value)).then((snapshot) => {
-                                if(snapshot.exists()){
-                                    if(pass_input_db.value===snapshot.val().pass){
-                                        alert("Quản lí đăng nhập thành công");
-                                    }
-                                    else {
-                                        alert("Sai mật khẩu, vui lòng đăng nhập lại ");
-                                    }
-                                }else {
-                                    alert("Tài khoản không tồn tại");
-                                }
-                            }).catch((err) =>{
-                                alert("error");
-                                console.log(error);
-                            }) 
                         }else {
                             alert("vui long chon ban_la")
                         }
                     }
 
-                    Sign_input_db.addEventListener('click',Sign_in_function);
+                    Sign_input_db.addEventListener('click',get_pass);
 
 
 
